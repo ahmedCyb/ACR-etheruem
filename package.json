@@ -1,0 +1,21 @@
+{
+  "name": "cyb433-group1-academic-credentials-registry",
+  "version": "1.0.0",
+  "description": "CYB433 Group 1 - Ethereum Academic Credentials Registry (Taibah University)",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "coverage": "hardhat coverage",
+    "gas": "REPORT_GAS=true hardhat test",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.0",
+    "solidity-coverage": "^0.8.12"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2"
+  }
+}

@@ -1,0 +1,51 @@
+Compiled 6 Solidity files successfully (evm target: paris).
+
+  TourismTicketingPortal
+    1. Deployment & Access Control
+      ✔ 1. assigns DEFAULT_ADMIN_ROLE, OPERATOR_ROLE, and GATE_VALIDATOR_ROLE properly
+      ✔ 2. reverts deployment when any initial role address is zero
+      ✔ 3. rejects unauthorized calls to configureTimeSlot, setTimeSlotActive, and issuePass
+      ✔ 4. rejects unauthorized calls to validateAtGate and cancelPass
+    2. Time Slot & Anti-Overbooking Rules
+      ✔ 5. rejects zero capacity, invalid time windows, and price cap below base price
+      ✔ 6. enforces slot capacity and blocks overbooking once full
+      ✔ 7. rejects duplicate passId and zero holder address on issuance
+      ✔ 8. rejects underpayment, non-existent slot, and inactive slot
+      ✔ 9. updates slot configuration and rejects shrinking capacity below issuedCount
+    3. Anti-Scalping & Pass Transfers
+      ✔ 10. allows legitimate transfer within price cap and updates ETH balances
+      ✔ 11. blocks scalping when transfer price exceeds maxTransferPriceWei
+      ✔ 12. enforces MAX_TRANSFERS_PER_PASS (2 transfers max)
+      ✔ 13. rejects transfers from non-holder or to zero address
+    4. Gate Validation, Anti-Reuse, Expiration & Cancellation
+      ✔ 14. validates an active pass once at the gate and blocks reuse
+      ✔ 15. rejects gate validation when commitment hash does not match
+      ✔ 16. invalidates pass after time slot ends and blocks post-window validation/transfer
+      ✔ 17. cancels an active pass, refunds holder, and reverts queries on non-existent records
+
+·------------------------------------------------|---------------------------|-------------|-----------------------------·
+|              Solc version: 0.8.24              ·  Optimizer enabled: true  ·  Runs: 200  ·  Block limit: 60000000 gas  │
+·················································|···························|·············|······························
+|  Methods                                                                                                               │
+···························|·····················|·············|·············|·············|···············|··············
+|  Contract                ·  Method             ·  Min        ·  Max        ·  Avg        ·  # calls      ·  usd (avg)  │
+···························|·····················|·············|·············|·············|···············|··············
+|  TourismTicketingPortal  ·  cancelPass         ·          -  ·          -  ·      45212  ·            3  ·          -  │
+···························|·····················|·············|·············|·············|···············|··············
+|  TourismTicketingPortal  ·  configureTimeSlot  ·      38969  ·      95869  ·      92708  ·           18  ·          -  │
+···························|·····················|·············|·············|·············|···············|··············
+|  TourismTicketingPortal  ·  issuePass          ·     148061  ·     148085  ·     148082  ·           13  ·          -  │
+···························|·····················|·············|·············|·············|···············|··············
+|  TourismTicketingPortal  ·  setTimeSlotActive  ·          -  ·          -  ·      31593  ·            2  ·          -  │
+···························|·····················|·············|·············|·············|···············|··············
+|  TourismTicketingPortal  ·  transferPass       ·      50134  ·      52946  ·      51540  ·            4  ·          -  │
+···························|·····················|·············|·············|·············|···············|··············
+|  TourismTicketingPortal  ·  validateAtGate     ·          -  ·          -  ·      38875  ·            2  ·          -  │
+···························|·····················|·············|·············|·············|···············|··············
+|  Deployments                                   ·                                         ·  % of limit   ·             │
+·················································|·············|·············|·············|···············|··············
+|  TourismTicketingPortal                        ·          -  ·          -  ·    1633442  ·        2.7 %  ·          -  │
+·------------------------------------------------|-------------|-------------|-------------|---------------|-------------·
+
+  17 passing (393ms)
+

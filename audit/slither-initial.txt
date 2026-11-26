@@ -1,0 +1,143 @@
+'npx hardhat clean' running (wd: /home/marcus/projects/etheruem)
+'npx hardhat clean --global' running (wd: /home/marcus/projects/etheruem)
+Problem executing hardhat: npm notice run cyb433-group6-tourism-ticketing-portal@1.0.0 npx
+npm notice run 'hardhat' console --no-compile
+
+'npx hardhat compile --force' running (wd: /home/marcus/projects/etheruem)
+INFO:Detectors:
+Detector: incorrect-equality
+TourismTicketingPortal.getPass(bytes32) (contracts/TourismTicketingPortal.sol#360-363) uses a dangerous strict equality:
+	- _passes[passId].status == PassStatus.None (contracts/TourismTicketingPortal.sol#361)
+TourismTicketingPortal.transferPass(bytes32,address,uint256,bytes32) (contracts/TourismTicketingPortal.sol#221-274) uses a dangerous strict equality:
+	- _passes[passId].status == PassStatus.None (contracts/TourismTicketingPortal.sol#228)
+TourismTicketingPortal.verifyPass(bytes32) (contracts/TourismTicketingPortal.sol#324-353) uses a dangerous strict equality:
+	- _passes[passId].status == PassStatus.None (contracts/TourismTicketingPortal.sol#335)
+TourismTicketingPortal.verifyPass(bytes32) (contracts/TourismTicketingPortal.sol#324-353) uses a dangerous strict equality:
+	- isValid = (_passes[passId].status == PassStatus.Active) && _slots[pSlotKey].active && withinWindow (contracts/TourismTicketingPortal.sol#341-344)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+INFO:Detectors:
+Detector: reentrancy-events
+Reentrancy in TourismTicketingPortal.cancelPass(bytes32) (contracts/TourismTicketingPortal.sol#303-322):
+	External calls:
+	- (ok,None) = address(currentHolder).call{value: actualRefund}() (contracts/TourismTicketingPortal.sol#317)
+	Event emitted after the call(s):
+	- PassCancelled(passId,msg.sender,actualRefund) (contracts/TourismTicketingPortal.sol#321)
+Reentrancy in TourismTicketingPortal.issuePass(bytes32,bytes32,uint64,address,bytes32) (contracts/TourismTicketingPortal.sol#170-219):
+	External calls:
+	- (ok,None) = address(msg.sender).call{value: excess}() (contracts/TourismTicketingPortal.sol#208)
+	Event emitted after the call(s):
+	- PassIssued(passId,slotKey,_passes[passId].holder,_passes[passId].holderCommitmentHash,_passes[passId].paidPriceWei) (contracts/TourismTicketingPortal.sol#212-218)
+Reentrancy in TourismTicketingPortal.transferPass(bytes32,address,uint256,bytes32) (contracts/TourismTicketingPortal.sol#221-274):
+	External calls:
+	- (paid,None) = address(prevHolder).call{value: transferPriceWei}() (contracts/TourismTicketingPortal.sol#256)
+	- (refunded,None) = address(msg.sender).call{value: refund}() (contracts/TourismTicketingPortal.sol#259)
+	- (refundedBack,None) = address(msg.sender).call{value: msg.value}() (contracts/TourismTicketingPortal.sol#263)
+	Event emitted after the call(s):
+	- PassTransferred(passId,prevHolder,_passes[passId].holder,transferPriceWei,_passes[passId].transferCount) (contracts/TourismTicketingPortal.sol#267-273)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-4
+INFO:Detectors:
+Detector: timestamp
+TourismTicketingPortal.configureTimeSlot(bytes32,uint64,uint32,uint64,uint64,uint256,uint256) (contracts/TourismTicketingPortal.sol#126-161) uses timestamp for comparisons
+	Dangerous comparisons:
+	- endTime <= startTime || endTime <= uint64(block.timestamp) (contracts/TourismTicketingPortal.sol#136)
+TourismTicketingPortal.issuePass(bytes32,bytes32,uint64,address,bytes32) (contracts/TourismTicketingPortal.sol#170-219) uses timestamp for comparisons
+	Dangerous comparisons:
+	- uint64(block.timestamp) > _slots[slotKey].endTime (contracts/TourismTicketingPortal.sol#183)
+TourismTicketingPortal.transferPass(bytes32,address,uint256,bytes32) (contracts/TourismTicketingPortal.sol#221-274) uses timestamp for comparisons
+	Dangerous comparisons:
+	- _passes[passId].status == PassStatus.None (contracts/TourismTicketingPortal.sol#228)
+	- _passes[passId].status != PassStatus.Active (contracts/TourismTicketingPortal.sol#229)
+	- _passes[passId].holder != msg.sender (contracts/TourismTicketingPortal.sol#232)
+	- _passes[passId].transferCount >= MAX_TRANSFERS_PER_PASS (contracts/TourismTicketingPortal.sol#235)
+	- uint64(block.timestamp) > _slots[_passes[passId].slotKey].endTime (contracts/TourismTicketingPortal.sol#238)
+TourismTicketingPortal.validateAtGate(bytes32,bytes32) (contracts/TourismTicketingPortal.sol#276-301) uses timestamp for comparisons
+	Dangerous comparisons:
+	- uint64(block.timestamp) > _slots[_passes[passId].slotKey].endTime (contracts/TourismTicketingPortal.sol#284)
+TourismTicketingPortal.verifyPass(bytes32) (contracts/TourismTicketingPortal.sol#324-353) uses timestamp for comparisons
+	Dangerous comparisons:
+	- _passes[passId].status == PassStatus.None (contracts/TourismTicketingPortal.sol#335)
+	- withinWindow = uint64(block.timestamp) <= _slots[pSlotKey].endTime (contracts/TourismTicketingPortal.sol#340)
+	- isValid = (_passes[passId].status == PassStatus.Active) && _slots[pSlotKey].active && withinWindow (contracts/TourismTicketingPortal.sol#341-344)
+TourismTicketingPortal.getPass(bytes32) (contracts/TourismTicketingPortal.sol#360-363) uses timestamp for comparisons
+	Dangerous comparisons:
+	- _passes[passId].status == PassStatus.None (contracts/TourismTicketingPortal.sol#361)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+INFO:Detectors:
+Detector: pragma
+4 different versions of Solidity are used:
+	- Version constraint ^0.8.20 is used by:
+		-^0.8.20 (node_modules/@openzeppelin/contracts/access/AccessControl.sol#4)
+		-^0.8.20 (node_modules/@openzeppelin/contracts/utils/Context.sol#4)
+		-^0.8.20 (node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol#4)
+	- Version constraint >=0.8.4 is used by:
+		->=0.8.4 (node_modules/@openzeppelin/contracts/access/IAccessControl.sol#4)
+	- Version constraint >=0.4.16 is used by:
+		->=0.4.16 (node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol#4)
+	- Version constraint ^0.8.24 is used by:
+		-^0.8.24 (contracts/TourismTicketingPortal.sol#2)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#different-pragma-directives-are-used
+INFO:Detectors:
+Detector: cyclomatic-complexity
+TourismTicketingPortal.transferPass(bytes32,address,uint256,bytes32) (contracts/TourismTicketingPortal.sol#221-274) has a high cyclomatic complexity (14).
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#cyclomatic-complexity
+INFO:Detectors:
+Detector: solc-version
+Version constraint ^0.8.20 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)
+	- VerbatimInvalidDeduplication
+	- FullInlinerNonExpressionSplitArgumentEvaluationOrder
+	- MissingSideEffectsOnSelectorAccess.
+It is used by:
+	- ^0.8.20 (node_modules/@openzeppelin/contracts/access/AccessControl.sol#4)
+	- ^0.8.20 (node_modules/@openzeppelin/contracts/utils/Context.sol#4)
+	- ^0.8.20 (node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol#4)
+Version constraint >=0.8.4 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)
+	- FullInlinerNonExpressionSplitArgumentEvaluationOrder
+	- MissingSideEffectsOnSelectorAccess
+	- AbiReencodingHeadOverflowWithStaticArrayCleanup
+	- DirtyBytesArrayToStorage
+	- DataLocationChangeInInternalOverride
+	- NestedCalldataArrayAbiReencodingSizeValidation
+	- SignedImmutables.
+It is used by:
+	- >=0.8.4 (node_modules/@openzeppelin/contracts/access/IAccessControl.sol#4)
+Version constraint >=0.4.16 contains known severe issues (https://solidity.readthedocs.io/en/latest/bugs.html)
+	- DirtyBytesArrayToStorage
+	- ABIDecodeTwoDimensionalArrayMemory
+	- KeccakCaching
+	- EmptyByteArrayCopy
+	- DynamicArrayCleanup
+	- ImplicitConstructorCallvalueCheck
+	- TupleAssignmentMultiStackSlotComponents
+	- MemoryArrayCreationOverflow
+	- privateCanBeOverridden
+	- SignedArrayStorageCopy
+	- ABIEncoderV2StorageArrayWithMultiSlotElement
+	- DynamicConstructorArgumentsClippedABIV2
+	- UninitializedFunctionPointerInConstructor_0.4.x
+	- IncorrectEventSignatureInLibraries_0.4.x
+	- ExpExponentCleanup
+	- NestedArrayFunctionCallDecoder
+	- ZeroFunctionSelector.
+It is used by:
+	- >=0.4.16 (node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol#4)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+INFO:Detectors:
+Detector: low-level-calls
+Low level call in TourismTicketingPortal.issuePass(bytes32,bytes32,uint64,address,bytes32) (contracts/TourismTicketingPortal.sol#170-219):
+	- (ok,None) = address(msg.sender).call{value: excess}() (contracts/TourismTicketingPortal.sol#208)
+Low level call in TourismTicketingPortal.transferPass(bytes32,address,uint256,bytes32) (contracts/TourismTicketingPortal.sol#221-274):
+	- (paid,None) = address(prevHolder).call{value: transferPriceWei}() (contracts/TourismTicketingPortal.sol#256)
+	- (refunded,None) = address(msg.sender).call{value: refund}() (contracts/TourismTicketingPortal.sol#259)
+	- (refundedBack,None) = address(msg.sender).call{value: msg.value}() (contracts/TourismTicketingPortal.sol#263)
+Low level call in TourismTicketingPortal.cancelPass(bytes32) (contracts/TourismTicketingPortal.sol#303-322):
+	- (ok,None) = address(currentHolder).call{value: actualRefund}() (contracts/TourismTicketingPortal.sol#317)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+INFO:Detectors:
+Detector: naming-convention
+Variable TourismTicketingPortal.MAX_TRANSFERS_PER_PASS (contracts/TourismTicketingPortal.sol#10) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+INFO:Detectors:
+Detector: constable-states
+TourismTicketingPortal.MAX_TRANSFERS_PER_PASS (contracts/TourismTicketingPortal.sol#10) should be constant 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+INFO:Slither:. analyzed (6 contracts with 102 detectors), 23 result(s) found

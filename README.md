@@ -11,8 +11,8 @@ Smart contract implementation for **Use Case 6: Tourism Ticketing Portal**, enfo
 
 ## Sepolia Deployment & Etherscan
 
-- **Contract Address (Sepolia):** `0xc3C760891D624418a3f8482C412fc6f4De3964b0`
-- **Etherscan Link:** [https://sepolia.etherscan.io/address/0xc3C760891D624418a3f8482C412fc6f4De3964b0#code](https://sepolia.etherscan.io/address/0xc3C760891D624418a3f8482C412fc6f4De3964b0#code)
+- **Contract Address (Sepolia):** `0xb81dAB02aC70E1A099520101d1A6F99C6469063A`
+- **Etherscan Link:** [[https://sepolia.etherscan.io/address/0xc3C760891D624418a3f8482C412fc6f4De3964b0#code](https://sepolia.etherscan.io/address/0xc3C760891D624418a3f8482C412fc6f4De3964b0#code](https://sepolia.etherscan.io/address/0xb81dAB02aC70E1A099520101d1A6F99C6469063A#code)
 
 ## How to Run
 
